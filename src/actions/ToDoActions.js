@@ -1,20 +1,30 @@
-//let nextTodoId = 0;
 export function addItem(item){
-    return{
-        type: "ADD_ITEM",
-        payload: item
+    let url = "http://localhost/dummyAPI/index.php?item=" + item;
+    return dispatch => {
+        fetch(url)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(parsedData) {
+                dispatch({
+                    type: "ADD_ITEM",
+                    payload: item
+                });
+            })
     }
 }
 
-/*      
-export function addItem(item){
+export function itemsHasErrored(bool){
     return{
-        type: "ADD_ITEM",
-        payload: new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(item);
-            }, 1000);
-        })
-    }; 
+        type: 'ITEMS_HAS_ERRORED',
+        hasErrored: bool
+    };
 }
-*/
+
+export function itemsIsLoading(bool){
+    return{
+        type: 'ITEMS_IS_LOADING',
+        isLoading: bool
+    };
+}
+
